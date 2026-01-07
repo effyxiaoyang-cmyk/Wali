@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
-import { Trophy, Sparkles, Users, Lightbulb, Palette, Target } from 'lucide-react';
+import { Trophy, Sparkles, Users, Lightbulb, Palette, Target, Home } from 'lucide-react';
 
 export interface TalentScores {
   logic: number;
@@ -14,9 +14,10 @@ export interface TalentScores {
 interface ResultPageProps {
   scores: TalentScores;
   onRestart: () => void;
+  onBackToHub?: () => void;
 }
 
-export function ResultPage({ scores, onRestart }: ResultPageProps) {
+export function ResultPage({ scores, onRestart, onBackToHub }: ResultPageProps) {
   const chartData = [
     { talent: '逻辑思维', score: scores.logic, fullMark: 100 },
     { talent: '创造力', score: scores.creativity, fullMark: 100 },
@@ -139,12 +140,23 @@ export function ResultPage({ scores, onRestart }: ResultPageProps) {
       </div>
 
       <div className="text-center">
-        <button
-          onClick={onRestart}
-          className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
-        >
-          重新测试
-        </button>
+        <div className="flex gap-4 justify-center">
+          <button
+            onClick={onRestart}
+            className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl"
+          >
+            重新测试
+          </button>
+          {onBackToHub && (
+            <button
+              onClick={onBackToHub}
+              className="px-8 py-3 bg-white text-gray-700 border-2 border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center gap-2"
+            >
+              <Home className="w-4 h-4" />
+              返回测评中心
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );

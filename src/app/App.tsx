@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { QuestionCard } from './components/QuestionCard';
 import { ResultPage, TalentScores } from './components/ResultPage';
+import { AssessmentHub } from './components/AssessmentHub';
 import { questions } from './data/questions';
-import { Brain, ChevronRight } from 'lucide-react';
+import { Brain, ChevronRight, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
+  const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -84,10 +86,34 @@ export default function App() {
     setStarted(false);
   };
 
+  const handleBackToHub = () => {
+    setSelectedAssessment(null);
+    setCurrentQuestionIndex(0);
+    setAnswers([]);
+    setSelectedOption(null);
+    setShowResult(false);
+    setStarted(false);
+  };
+
   const handleStart = () => {
     setStarted(true);
   };
 
+  const handleSelectAssessment = (assessmentId: string) => {
+    setSelectedAssessment(assessmentId);
+    setStarted(false);
+    setCurrentQuestionIndex(0);
+    setAnswers([]);
+    setSelectedOption(null);
+    setShowResult(false);
+  };
+
+  // 如果还没选择测评，显示测评集合页面
+  if (!selectedAssessment) {
+    return <AssessmentHub onSelectAssessment={handleSelectAssessment} />;
+  }
+
+  // 如果选择了测评但还没开始
   if (!started) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
@@ -96,6 +122,13 @@ export default function App() {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center max-w-2xl"
         >
+          <button
+            onClick={handleBackToHub}
+            className="mb-6 inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            <span className="text-sm">返回测评中心</span>
+          </button>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -132,7 +165,7 @@ export default function App() {
   if (showResult) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 py-12">
-        <ResultPage scores={talentScores} onRestart={handleRestart} />
+        <ResultPage scores={talentScores} onRestart={handleRestart} onBackToHub={handleBackToHub} />
       </div>
     );
   }
@@ -143,6 +176,13 @@ export default function App() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 py-12">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
+          <button
+            onClick={handleBackToHub}
+            className="mb-4 inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            <span className="text-sm">返回测评中心</span>
+          </button>
           <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm mb-4">
             <Brain className="w-5 h-5 text-blue-600" />
             <span className="text-sm font-medium">天赋自测</span>
