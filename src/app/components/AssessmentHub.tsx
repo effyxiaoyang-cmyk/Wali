@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { 
   Brain, 
   Heart, 
@@ -127,7 +128,7 @@ export const assessments: Assessment[] = [
 ];
 
 interface AssessmentHubProps {
-  onSelectAssessment: (assessmentId: string) => void;
+  onSelectAssessment?: (assessmentId: string) => void;
 }
 
 export function AssessmentHub({ onSelectAssessment }: AssessmentHubProps) {
@@ -149,35 +150,38 @@ export function AssessmentHub({ onSelectAssessment }: AssessmentHubProps) {
           {assessments.map((assessment, index) => {
             const Icon = assessment.icon;
             return (
-              <motion.div
+              <Link
                 key={assessment.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ scale: 1.02, y: -5 }}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all hover:shadow-2xl"
-                onClick={() => onSelectAssessment(assessment.id)}
+                to={`/assessment/${assessment.id}`}
               >
-                <div className={`h-2 bg-gradient-to-r ${assessment.gradient}`} />
-                <div className="p-6">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${assessment.gradient} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
-                    <Icon className="w-8 h-8 text-white" />
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-all hover:shadow-2xl"
+                >
+                  <div className={`h-2 bg-gradient-to-r ${assessment.gradient}`} />
+                  <div className="p-6">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${assessment.gradient} rounded-2xl flex items-center justify-center mb-4 shadow-lg`}>
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl mb-2">{assessment.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4 min-h-[40px]">
+                      {assessment.description}
+                    </p>
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <span>{assessment.questionCount} 道题</span>
+                      <span>{assessment.duration}</span>
+                    </div>
+                    <button
+                      className={`w-full mt-4 py-2 rounded-lg bg-gradient-to-r ${assessment.gradient} text-white hover:opacity-90 transition-opacity`}
+                    >
+                      开始测评
+                    </button>
                   </div>
-                  <h3 className="text-xl mb-2">{assessment.title}</h3>
-                  <p className="text-gray-600 text-sm mb-4 min-h-[40px]">
-                    {assessment.description}
-                  </p>
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>{assessment.questionCount} 道题</span>
-                    <span>{assessment.duration}</span>
-                  </div>
-                  <button
-                    className={`w-full mt-4 py-2 rounded-lg bg-gradient-to-r ${assessment.gradient} text-white hover:opacity-90 transition-opacity`}
-                  >
-                    开始测评
-                  </button>
-                </div>
-              </motion.div>
+                </motion.div>
+              </Link>
             );
           })}
         </div>
