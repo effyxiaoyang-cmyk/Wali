@@ -1,6 +1,8 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { AssessmentHub } from './components/AssessmentHub';
 import { TalentAssessment } from './pages/TalentAssessment';
+import { CareerAssessment } from './pages/CareerAssessment';
+import { NatureAssessment } from './pages/NatureAssessment';
 
 export default function App() {
   return (
@@ -8,9 +10,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AssessmentHub />} />
         <Route path="/assessment/talent" element={<TalentAssessment />} />
+        <Route path="/assessment/career" element={<CareerAssessment />} />
+        <Route path="/assessment/creativity" element={<NatureAssessment />} />
         <Route path="/assessment/personality" element={<ComingSoon type="personality" />} />
-        <Route path="/assessment/career" element={<ComingSoon type="career" />} />
-        <Route path="/assessment/creativity" element={<ComingSoon type="creativity" />} />
         <Route path="/assessment/emotional" element={<ComingSoon type="emotional" />} />
         <Route path="/assessment/leadership" element={<ComingSoon type="leadership" />} />
         <Route path="/assessment/learning" element={<ComingSoon type="learning" />} />
